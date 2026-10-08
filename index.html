@@ -1,0 +1,271 @@
+﻿<!DOCTYPE html>
+<html lang="hi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Aditya Singh AI Assistant 🤖</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    body {
+      background: linear-gradient(135deg, #0f172a, #1e293b);
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 12px;
+    }
+
+    .chat-container {
+      width: 100%;
+      max-width: 480px;
+      height: 94vh;
+      background: #1e293b;
+      border-radius: 20px;
+      display: flex;
+      flex-direction: column;
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
+      border: 1px solid #334155;
+      overflow: hidden;
+    }
+
+    .chat-header {
+      background: linear-gradient(135deg, #2563eb, #1d4ed8);
+      color: #ffffff;
+      padding: 16px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .header-info h2 {
+      font-size: 18px;
+      font-weight: 700;
+    }
+
+    .header-info p {
+      font-size: 12px;
+      opacity: 0.9;
+    }
+
+    .api-btn {
+      background: rgba(255, 255, 255, 0.2);
+      border: 1px solid rgba(255, 255, 255, 0.4);
+      color: white;
+      padding: 6px 12px;
+      border-radius: 20px;
+      font-size: 12px;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+
+    .api-btn:hover {
+      background: rgba(255, 255, 255, 0.35);
+    }
+
+    .messages-area {
+      flex: 1;
+      padding: 16px;
+      overflow-y: auto;
+      background: #0f172a;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .msg {
+      max-width: 82%;
+      padding: 10px 14px;
+      border-radius: 14px;
+      font-size: 14px;
+      line-height: 1.5;
+      word-wrap: break-word;
+    }
+
+    .user-msg {
+      align-self: flex-end;
+      background: #2563eb;
+      color: white;
+      border-bottom-right-radius: 2px;
+    }
+
+    .bot-msg {
+      align-self: flex-start;
+      background: #1e293b;
+      color: #f1f5f9;
+      border: 1px solid #334155;
+      border-bottom-left-radius: 2px;
+    }
+
+    .chat-input-area {
+      display: flex;
+      padding: 12px;
+      background: #1e293b;
+      border-top: 1px solid #334155;
+      gap: 8px;
+    }
+
+    .chat-input-area input {
+      flex: 1;
+      padding: 12px 16px;
+      background: #0f172a;
+      border: 1px solid #475569;
+      color: white;
+      border-radius: 25px;
+      outline: none;
+      font-size: 14px;
+    }
+
+    .chat-input-area input:focus {
+      border-color: #3b82f6;
+    }
+
+    .chat-input-area button {
+      background: #2563eb;
+      color: white;
+      border: none;
+      padding: 0 18px;
+      border-radius: 25px;
+      cursor: pointer;
+      font-weight: bold;
+      transition: background 0.2s;
+    }
+
+    .chat-input-area button:hover {
+      background: #1d4ed8;
+    }
+
+    .footer-bar {
+      background: #0f172a;
+      text-align: center;
+      padding: 6px;
+      font-size: 11px;
+      color: #94a3b8;
+      border-top: 1px solid #1e293b;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="chat-container">
+    <div class="chat-header">
+      <div class="header-info">
+        <h2>Aditya Singh AI 🤖</h2>
+        <p>Official Smart Assistant</p>
+      </div>
+      <button class="api-btn" onclick="setupKey()">⚙️ API Key</button>
+    </div>
+
+    <div class="messages-area" id="chatArea">
+      <div class="msg bot-msg">
+        नमस्ते! मैं <strong>Aditya Singh</strong> का AI असिस्टेंट हूँ। आप मुझसे दुनिया का कोई भी सवाल, गणित, कोडिंग या पढ़ाई से जुड़ी बातें पूछ सकते हैं!
+      </div>
+    </div>
+
+    <div class="chat-input-area">
+      <input type="text" id="userInput" placeholder="Aditya Singh AI से कुछ भी पूछें..." onkeydown="handleKey(event)">
+      <button onclick="sendMsg()">भेजें</button>
+    </div>
+
+    <div class="footer-bar">
+      Developed & Owned by <strong>Aditya Singh</strong> | All Rights Reserved © 2026
+    </div>
+  </div>
+
+  <script>
+    let geminiKey = localStorage.getItem("ADITYA_AI_KEY") || "";
+
+    function setupKey() {
+      const inputKey = prompt("अपनी Google Gemini API Key डालें (यह सिर्फ आपके ब्राउज़र में सेव रहेगी):", geminiKey);
+      if (inputKey !== null) {
+        geminiKey = inputKey.trim();
+        localStorage.setItem("ADITYA_AI_KEY", geminiKey);
+        if (geminiKey) {
+          alert("शानदार! API Key सेव हो गई। अब Aditya Singh AI पूरी क्षमता से हर सवाल का जवाब देगा।");
+        } else {
+          alert("API Key हटा दी गई।");
+        }
+      }
+    }
+
+    function handleKey(e) {
+      if (e.key === "Enter") sendMsg();
+    }
+
+    function addMsg(text, isUser = false) {
+      const area = document.getElementById("chatArea");
+      const d = document.createElement("div");
+      d.className = `msg ${isUser ? "user-msg" : "bot-msg"}`;
+      d.innerText = text;
+      area.appendChild(d);
+      area.scrollTop = area.scrollHeight;
+      return d;
+    }
+
+    async function sendMsg() {
+      const input = document.getElementById("userInput");
+      const text = input.value.trim();
+      if (!text) return;
+
+      addMsg(text, true);
+      input.value = "";
+
+      const lower = text.toLowerCase();
+
+      // अगर कोई क्रिएटर या मालिक के बारे में पूछे
+      if (lower.includes("owner") || lower.includes("malik") || lower.includes("banaya") || lower.includes("creator") || lower.includes("kiska")) {
+        setTimeout(() => {
+          addMsg("मुझे Aditya Singh ने बनाया और डिज़ाइन किया है। मैं Aditya Singh का पर्सनल और आधिकारिक AI असिस्टेंट हूँ!");
+        }, 300);
+        return;
+      }
+
+      // अगर API Key नहीं जोड़ी है
+      if (!geminiKey) {
+        const loading = addMsg("...", false);
+        setTimeout(() => {
+          loading.remove();
+          if (lower.includes("hello") || lower.includes("hi") || lower.includes("namaste")) {
+            addMsg("नमस्ते! मैं Aditya Singh का AI असिस्टेंट हूँ। पूरी दुनिया का ज्ञान अनलॉक करने के लिए ऊपर '⚙️ API Key' बटन दबाकर अपनी फ्री Key जोड़ें!");
+          } else {
+            addMsg("यह सवाल बहुत बढ़िया है! हर सवाल का लाइव जवाब पाने के लिए कृपया ऊपर '⚙️ API Key' पर क्लिक करके Google AI Studio की फ्री Key जोड़ दें।");
+          }
+        }, 500);
+        return;
+      }
+
+      // असली AI कॉल (Google Gemini)
+      const loading = addMsg("Aditya Singh AI सोच रहा है...", false);
+
+      const instruction = "तुम एक स्मार्ट AI असिस्टेंट हो जिसे Aditya Singh ने बनाया है। अगर कोई पूछे कि तुम्हें किसने बनाया है तो हमेशा गर्व से Aditya Singh का नाम लेना। अब इस सवाल का सटीक और मददगार उत्तर दो: ";
+
+      try {
+        const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${geminiKey}`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            contents: [{ parts: [{ text: instruction + text }] }]
+          })
+        });
+
+        const data = await response.json();
+        loading.remove();
+
+        if (data.candidates && data.candidates[0].content.parts[0].text) {
+          addMsg(data.candidates[0].content.parts[0].text, false);
+        } else {
+          addMsg("माफ़ कीजिए, उत्तर प्राप्त नहीं हुआ। कृपया API Key की जाँच करें।", false);
+        }
+      } catch (err) {
+        loading.remove();
+        addMsg("इंटरनेट या सर्वर से जुड़ने में समस्या आई। कृपया दोबारा प्रयास करें।", false);
+      }
+    }
+  </script>
+</body>
+</html>
